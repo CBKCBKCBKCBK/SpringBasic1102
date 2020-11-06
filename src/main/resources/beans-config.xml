@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:c="http://www.springframework.org/schema/c" 
+       xmlns:util="http://www.springframework.org/schema/util" 
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd 
+">
     <!--
     xml 延伸式標籤語言 extend markup language 資料交換格式
     xmlns ns namespace 命名空間
@@ -18,5 +23,96 @@
         <property name="name" value="Mary"/>
         <property name="age" value="22"/>
     </bean>
-
+    
+    <!-- 建構子注入 -->
+    <bean id="s3" class="com.mycompany.springbasic1102.di.Student">
+        <constructor-arg value="Anita" index="0" type="java.lang.String"/>
+        <constructor-arg value="18" index="1" type="java.lang.Integer"/>
+    </bean>
+    <!-- 使用p,c命名空間注入 -->
+    <bean id="s4" class="com.mycompany.springbasic1102.di.Student"
+          p:name="Tom" p:age="20"/>
+    <bean id="s5" class="com.mycompany.springbasic1102.di.Student"
+          c:name="Jo" c:age="21"/>
+    <!-- 使用 xxx_method 配置 -->
+    <bean id="s6" class="com.mycompany.springbasic1102.di.Student"
+          c:name="Jane" c:age="22" init-method="init" destroy-method="destroy"/>
+    <!-- ref參考注入1 -->
+    <bean id="t1" class="com.mycompany.springbasic1102.di.Teacher"
+          c:name="Happy"/>
+    <bean id="s7" class="com.mycompany.springbasic1102.di.Student">
+        <property name="name" value="Go"/>
+        <property name="age" value="22"/>
+        <property name="teacher" value="t1"/>
+    </bean>
+    <!-- ref參考注入2 -->
+    <bean id="t2" class="com.mycompany.springbasic1102.di.Teacher"/>
+    <bean id="s8" class="com.mycompany.springbasic1102.di.Student">
+        <property name="name" value="Go"/>
+        <property name="age" value="22"/>
+        <property name="teacher" value="t1"/>
+        <!-- 注入參考資料 -->
+        <property name="teacher.name" value="Kucky"/>
+    </bean>
+    <!-- ref參考注入3 -->
+    <bean id="s9" class="com.mycompany.springbasic1102.di.Student">
+        <property name="name" value="諸葛亮"/>
+        <property name="age" value="22"/>
+        <property name="teacher">   <!-- ref 參考注入內部類別 -->
+            <bean class="com.mycompany.springbasic1102.di.Teacher" c:name="劉備"/>
+        </property>
+    </bean>
+    <!-- 集合注入 List,Set,Map -->
+    <bean id="t3" class="com.mycompany.springbasic1102.di.Teacher">
+        <property name="name" value="Helen"/>
+        <!-- 班級 -->
+        <property name="cls">
+            <list><!-- 可替換為<array> -->
+                <value>甲班</value>
+                <value>乙班</value>
+            </list>
+        </property>
+        <!-- 學生 -->
+        <property name="students">
+            <set>
+                <ref bean="s1"/>
+                <ref bean="s5"/>
+                <ref bean="s7"/>
+            </set>
+        </property>
+        <!-- 科目 -->
+        <property name="subjects">
+            <map>
+                <entry>
+                    <key>
+                        <value>國文</value>
+                    </key>
+                    <value>3</value>
+                </entry>
+                <entry>
+                    <key>
+                        <value>數學</value>
+                    </key>
+                    <value>2</value>
+                </entry>
+                <entry>
+                    <key>
+                        <value>英文</value>
+                    </key>
+                    <value>1</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <util:set id="students">
+        <ref bean="s1"/>
+        <ref bean="s5"/>
+        <ref bean="s7"/>
+    </util:set>
+    
+    <bean id="t4" class="com.mycompany.springbasic1102.di.Teacher">
+        <property name="name" value="Helen"/>
+        <property name="students" ref="students"/>
+    </bean>
 </beans>
