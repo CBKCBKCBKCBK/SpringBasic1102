@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+    
+    <!-- 
+    autowire: 自動ref配置
+    autowire: byName | byValue | constructor | autodetect
+    -->
+    <bean id="oracleProgrammer" autowire="byName"
+    class="com.mycompany.springbasic1102.di.byname.OracleProgrammer">
+        <property name="name" value="john"/>
+    </bean>
+    <bean id="microsoftProgrammer" autowire="byName"
+    class="com.mycompany.springbasic1102.di.byname.MicrosoftProgrammer">
+        <property name="name" value="Mary"/>
+    </bean>
+    <bean id="java" class="com.mycompany.springbasic1102.di.byname.Language">
+        <property name="name" value="JAVA"/>
+    </bean>
+    <bean id="vb" class="com.mycompany.springbasic1102.di.byname.Language">
+        <property name="name" value="VB"/>
+    </bean>
+</beans>
